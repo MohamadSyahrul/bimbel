@@ -60,17 +60,22 @@ Absen Siswa {{ $kategori }}
                                         @foreach($kelas as $kel)
                                             @foreach($kel->absensi->sortDesc() as $a)
                                             <?php
-
-                                                $hadir  = \App\AbsensiUser::where('status','hadir')->where('absensi_id', '=', $a->id)->get()->count();
-                                                $thadir = \App\AbsensiUser::where('status','tidak hadir')->where('absensi_id', '=', $a->id)->get()->count();
-                                                $izin   = \App\AbsensiUser::where('status','izin')->where('absensi_id', '=', $a->id)->get()->count();
-                                                $none   = \App\AbsensiUser::where('status','none')->where('absensi_id', '=', $a->id)->get()->count();
+                                                $total  = \App\AbsensiUser::join('absensis', 'absensis.id', '=', 'absensi_users.absensi_id')
+                                                ->where('absensi_id', '=', $a->id)->where('id_kelas','=', $kel->id)->get()->count();
+                                                $hadir  = \App\AbsensiUser::join('absensis', 'absensis.id', '=', 'absensi_users.absensi_id')
+                                                ->where('status','hadir')->where('absensi_id', '=', $a->id)->where('id_kelas','=', $kel->id)->get()->count();
+                                                $thadir = \App\AbsensiUser::join('absensis', 'absensis.id', '=', 'absensi_users.absensi_id')
+                                                ->where('status','tidak hadir')->where('absensi_id', '=', $a->id)->get()->count();
+                                                $izin   = \App\AbsensiUser::join('absensis', 'absensis.id', '=', 'absensi_users.absensi_id')
+                                                ->where('status','izin')->where('absensi_id', '=', $a->id)->get()->count();
+                                                $none   = \App\AbsensiUser::join('absensis', 'absensis.id', '=', 'absensi_users.absensi_id')
+                                                ->where('status','none')->where('absensi_id', '=', $a->id)->get()->count();
                                             ?>
                                             <tr>
                                                 <td>{{ $a->tanggal }}</td>
                                                 <td>{{ $kel->nama_kelas }}</td>
                                                 <td>{{ $kel->kategori_kelas }}</td>
-                                                <td>{{ $a->count() }}</td>
+                                                <td>{{ $total }}</td>
                                                 <td>{{ $hadir }}</td>
                                                 <td>{{ $izin }}</td>
                                                 <td>{{ $thadir }}</td>
