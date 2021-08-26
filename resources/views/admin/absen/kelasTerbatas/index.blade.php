@@ -36,7 +36,7 @@ Absen Siswa {{ $kategori }}
                             <div id="divToPrint" style="display:none;">
                                 <div class="card-content">
                                     <center>
-                                    <h4 class="card-title">Absen Siswa Terbatas | <span class="text-uppercase">{{ $kategori }}</span></h4>
+                                    <h4 class="card-title">Absen Siswa | <span class="text-uppercase">{{ $kategori }}</span></h4>
                                     <table class="table"
                                         style=
                                         "
