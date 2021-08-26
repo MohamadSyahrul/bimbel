@@ -47,14 +47,20 @@
         <table>
             <tbody>
                 <?php
-                    $hadir  = \App\AbsensiUser::where('status','hadir')->where('absensi_id', '=', $absen->id)->get()->count();
-                    $thadir = \App\AbsensiUser::where('status','tidak hadir')->where('absensi_id', '=', $absen->id)->get()->count();
-                    $izin   = \App\AbsensiUser::where('status','izin')->where('absensi_id', '=', $absen->id)->get()->count();
-                    $none   = \App\AbsensiUser::where('status','none')->where('absensi_id', '=', $absen->id)->get()->count();
+                    $total  = \App\AbsensiUser::join('absensis', 'absensis.id', '=', 'absensi_users.absensi_id')
+                    ->where('absensi_id', '=', $absen->id)->where('id_kelas','=', $kelas->id)->get()->count();
+                    $hadir  = \App\AbsensiUser::join('absensis', 'absensis.id', '=', 'absensi_users.absensi_id')
+                    ->where('status','hadir')->where('absensi_id', '=', $absen->id)->where('id_kelas','=', $kelas->id)->get()->count();
+                    $thadir = \App\AbsensiUser::join('absensis', 'absensis.id', '=', 'absensi_users.absensi_id')
+                    ->where('status','tidak hadir')->where('absensi_id', '=', $absen->id)->where('id_kelas','=', $kelas->id)->get()->count();
+                    $izin   = \App\AbsensiUser::join('absensis', 'absensis.id', '=', 'absensi_users.absensi_id')
+                    ->where('status','izin')->where('absensi_id', '=', $absen->id)->where('id_kelas','=', $kelas->id)->get()->count();
+                    $none   = \App\AbsensiUser::join('absensis', 'absensis.id', '=', 'absensi_users.absensi_id')
+                    ->where('status','none')->where('absensi_id', '=', $absen->id)->where('id_kelas','=', $kelas->id)->get()->count();
                 ?>
                 <tr>
                     <td style='text-align:left;'>Total Siswa </td>
-                    <td colspan='3' style='text-align:left;'>: {{$user->count()}} Siswa</td>
+                    <td colspan='3' style='text-align:left;'>: {{$total}} Siswa</td>
                 </tr>
                 <tr>
                     <td style='text-align:left;'>Total Siswa Hadir : </td>
