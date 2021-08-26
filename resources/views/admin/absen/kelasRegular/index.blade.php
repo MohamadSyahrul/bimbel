@@ -19,6 +19,72 @@ Absen Siswa {{ $kategori }}
                     <div class="card">
                         <div class="card-header">
                             <h4 class="card-title">Absen Siswa Regular | <span class="text-uppercase">{{ $kategori }}</span></h4>
+                            <script type="text/javascript">     
+                                function PrintDiv() {    
+                                var divToPrint = document.getElementById('divToPrint');
+                                var popupWin = window.open('', '_blank');
+                                popupWin.document.open();
+                                popupWin.document.write('<html><body onload="window.print()">' + divToPrint.innerHTML + '</html>');
+                                    popupWin.document.close();
+                                        }
+                            </script>
+
+
+
+
+                            <div id="divToPrint" style="display:none;">
+                                <div class="card-content">
+                                    <center>
+                                    <h4 class="card-title">Absen Siswa Terbatas | <span class="text-uppercase">{{ $kategori }}</span></h4>
+                                    <table class="table"
+                                        style=
+                                        "
+                                            width:100%;
+                                            text-align: center;
+                                            border: solid 1px black;
+                                        ">
+                                        <thead class="">
+                                            <tr>
+                                                <th>Tanggal</th>
+                                                <th>Kelas</th>
+                                                <th>Kategori</th>
+                                                <th>Siswa</th>
+                                                <th>Hadir</th>
+                                                <th>Izin</th>
+                                                <th>Tidak hadir</th>
+                                                
+                                            </tr>
+                                        </thead>
+                                        <tbody class="">
+                                        @foreach($kelas as $kel)
+                                            @foreach($kel->absensi->sortDesc() as $a)
+                                            <?php
+
+                                                $hadir  = \App\AbsensiUser::where('status','hadir')->where('absensi_id', '=', $a->id)->get()->count();
+                                                $thadir = \App\AbsensiUser::where('status','tidak hadir')->where('absensi_id', '=', $a->id)->get()->count();
+                                                $izin   = \App\AbsensiUser::where('status','izin')->where('absensi_id', '=', $a->id)->get()->count();
+                                                $none   = \App\AbsensiUser::where('status','none')->where('absensi_id', '=', $a->id)->get()->count();
+                                            ?>
+                                            <tr>
+                                                <td>{{ $a->tanggal }}</td>
+                                                <td>{{ $kel->nama_kelas }}</td>
+                                                <td>{{ $kel->kategori_kelas }}</td>
+                                                <td>{{ $a->count() }}</td>
+                                                <td>{{ $hadir }}</td>
+                                                <td>{{ $izin }}</td>
+                                                <td>{{ $thadir }}</td>
+                                                
+                                            </tr>
+                                            @endforeach
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                </center>              
+                            </div>
+                            </div>
+                            <div>
+                            <input type="button" class="btn btn-icon btn-outline-primary float-right mr-1 mb-1" value="rekap" onclick="PrintDiv();" />
+                            </div>
                             <a role="button" href="#" class="btn btn-icon btn-outline-primary float-right mr-1 mb-1"
                                 title="tambah tanggal" data-toggle="modal" data-target="#addDate"><i class="feather icon-calendar"></i> Add</a>
                         </div>
@@ -42,6 +108,11 @@ Absen Siswa {{ $kategori }}
                                                 <td>{{ $kel->nama_kelas }}</td>
                                                 <td class="text-uppercase">{{ $kel->kategori }}</td>
                                                 <td>
+                                                    <a href="{{ route('cetak', [$a->id]) }}" class="avatar bg-primary" title="Cetak">
+                                                        <div class="avatar-content">
+                                                                <i class="avatar-icon text-white feather icon-book"></i>
+                                                        </div>
+                                                    </a>
                                                     <a href="{{ route('absen-siswa-regular.show', ['absen_siswa_regular'=>$a->id]) }}" class="avatar bg-warning" title="Lihat">
                                                         <div class="avatar-content">
                                                                 <i class="avatar-icon text-white feather icon-eye"></i>
@@ -111,6 +182,75 @@ Absen Siswa {{ $kategori }}
 
     </div>
 </div>
+
+
+<script type="text/javascript">     
+    function PrintDiv() {    
+       var divToPrint = document.getElementById('divToPrint');
+       var popupWin = window.open('', '_blank');
+       popupWin.document.open();
+       popupWin.document.write('<html><body onload="window.print()">' + divToPrint.innerHTML + '</html>');
+        popupWin.document.close();
+            }
+ </script>
+
+
+
+
+<div id="divToPrint" style="display:none;">
+    <div class="card-content">
+        <center>
+        <h4 class="card-title">Absen Siswa Terbatas | <span class="text-uppercase">{{ $kategori }}</span></h4>
+        <table class="table"
+            style=
+            "
+                width:100%;
+                text-align: center;
+                border: solid 1px black;
+            ">
+            <thead class="">
+                <tr>
+                    <th>Tanggal</th>
+                    <th>Kelas</th>
+                    <th>Kategori</th>
+                    <th>Siswa</th>
+                    <th>Hadir</th>
+                    <th>Izin</th>
+                    <th>Tidak hadir</th>
+                    
+                </tr>
+            </thead>
+            <tbody class="">
+            @foreach($kelas as $kel)
+                @foreach($kel->absensi->sortDesc() as $a)
+                <?php
+
+                    $hadir  = \App\AbsensiUser::where('status','hadir')->where('absensi_id', '=', $a->id)->get()->count();
+                    $thadir = \App\AbsensiUser::where('status','tidak hadir')->where('absensi_id', '=', $a->id)->get()->count();
+                    $izin   = \App\AbsensiUser::where('status','izin')->where('absensi_id', '=', $a->id)->get()->count();
+                    $none   = \App\AbsensiUser::where('status','none')->where('absensi_id', '=', $a->id)->get()->count();
+                ?>
+                <tr>
+                    <td>{{ $a->tanggal }}</td>
+                    <td>{{ $kel->nama_kelas }}</td>
+                    <td>{{ $kel->kategori_kelas }}</td>
+                    <td>{{ $a->count() }}</td>
+                    <td>{{ $hadir }}</td>
+                    <td>{{ $izin }}</td>
+                    <td>{{ $thadir }}</td>
+                    
+                </tr>
+                @endforeach
+            @endforeach
+            </tbody>
+        </table>
+    </center>              
+</div>
+</div>
+<div>
+  <input type="button" value="print" onclick="PrintDiv();" />
+</div>
+
 @endsection
 @push('plugin-scripts')
 <script src="{{asset('/app-assets/vendors/js/tables/datatable/datatables.min.js')}}"></script>

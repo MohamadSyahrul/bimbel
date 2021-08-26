@@ -94,6 +94,10 @@ Route::middleware(['auth'])->group(function() {
             return view('admin.siswa.kelas_terbatas.kedinasan.index');
         });
 
+        //cetak PDF
+        Route::get('/terbatas/absen-siswa-terbatas/cetak/{id}', 'AbsensiTerbatasController@pdf')->name('cetak');
+        Route::get('/terbatas/absen-siswa-terbatas/rekap/', 'AbsensiTerbatasController@pdfRekap')->name('cetakRekap');
+
         // Create dan Update
         Route::get('/siswa-terbatas-sd/create', function () {
             return view('admin.siswa.kelas_terbatas.sd.create');
@@ -127,8 +131,6 @@ Route::middleware(['auth'])->group(function() {
         // Transaksi
         Route::resource('transaksi', 'TransaksiController');
         
-        //cetak PDF
-        Route::get('/terbatas/absen-siswa-terbatas/cetak/{id}', 'AbsensiTerbatasController@pdf')->name('cetak');
     });
 
     // Route Siswa

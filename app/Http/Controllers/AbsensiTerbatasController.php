@@ -196,6 +196,25 @@ class AbsensiTerbatasController extends Controller
         $kelas = Kelas::find($absen->id_kelas);
         
         $pdf = \PDF::loadView('admin.absen.cetak.cetak', compact(['absen', 'kelas', 'user']));
-        return $pdf->download('absen-'.$kelas->kategori.'-'.$absen->tanggal.'-'.$kelas->nama_kelas.'.pdf');
+        return $pdf->stream('absen-'.$kelas->kategori.'-'.$absen->tanggal.'-'.$kelas->nama_kelas.'.pdf', array("Attachment" => false));
+        // return $pdf->download('absen-'.$kelas->kategori.'-'.$absen->tanggal.'-'.$kelas->nama_kelas.'.pdf');
+    }
+    
+    public function pdfRekap()
+    {
+        // $absen = Absensi::all();
+        // $user = Absensi::all();
+        // $kelas = Kelas::all();
+        // $kelas = Kelas::where('kategori', 'sd/mi')->where('kategori_kelas', 'terbatas')->get();
+        // $kategori = 'SD/MI';
+        $kelas = Kelas::where('kategori', 'sma/ma-ips')->where('kategori_kelas', 'terbatas')->get();
+        $kategori = 'SMA/MA-IPS';
+        // dd($absen, $user, $kelas);
+        // die();
+        
+        
+        $pdf = \PDF::loadView('admin.absen.cetak.rekap', compact(['kelas']));
+        return $pdf->stream('Rekap-absen.pdf', array("Attachment" => false));
+        // return $pdf->download('absen-'.$kelas->kategori.'-'.$absen->tanggal.'-'.$kelas->nama_kelas.'.pdf');
     }
 }

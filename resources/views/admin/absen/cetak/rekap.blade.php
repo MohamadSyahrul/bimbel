@@ -43,33 +43,6 @@
                 @endforeach
             </tbody>
         </table>
-        <br>
-        <table>
-            <tbody>
-                <?php
-                    $hadir  = \App\AbsensiUser::where('status','hadir')->where('absensi_id', '=', $absen->id)->get()->count();
-                    $thadir = \App\AbsensiUser::where('status','tidak hadir')->where('absensi_id', '=', $absen->id)->get()->count();
-                    $izin   = \App\AbsensiUser::where('status','izin')->where('absensi_id', '=', $absen->id)->get()->count();
-                    $none   = \App\AbsensiUser::where('status','none')->where('absensi_id', '=', $absen->id)->get()->count();
-                ?>
-                <tr>
-                    <td style='text-align:left;'>Total Siswa </td>
-                    <td colspan='3' style='text-align:left;'>: {{$user->count()}} Siswa</td>
-                </tr>
-                <tr>
-                    <td style='text-align:left;'>Total Siswa Hadir : </td>
-                    <td colspan='3' style='text-align:left;'>: {{$hadir}} Siswa</td>
-                </tr>
-                <tr>
-                    <td style='text-align:left;'>Total Siswa Tidak Hadir : </td>
-                    <td colspan='3' style='text-align:left;'>: {{$none}} Siswa</td>
-                </tr>
-                <tr>
-                    <td style='text-align:left;'>Total Siswa Izin : </td>
-                    <td colspan='3' style='text-align:left;'>: {{$izin}} Siswa</td>
-                </tr>
-            </tbody>
-        </table>
     </center>
 </body>
 </html>
