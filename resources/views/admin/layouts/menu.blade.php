@@ -52,9 +52,8 @@
                                 </li>
                             </ul>
                         </li>
-                        <li><a href="#"><i class="feather icon-user-check"></i><span class="menu-item" data-i18n="View">Rekap Absensi</span></a>
-                            <ul class="menu-content">
-                            </ul>
+                        <li><a href="{{url('admin/rekap/absensi')}}"><i class="feather icon-user-check"></i><span class="menu-item" data-i18n="View">Rekap Absensi</span></a>
+                            
                         </li>
                     </ul>
                 </li>
