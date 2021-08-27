@@ -97,12 +97,11 @@ class AbsensiTerbatasController extends Controller
     {
         //
         $absen = Absensi::find($id);
-        $user = Absensi::find($id)->user;
         $kelas = Kelas::find($absen->id_kelas);
-        // dd($user);
-        // die();
+        $absensi_user = AbsensiUser::where('absensi_id', $id)->get();
+        // dd($absensi_user);
 
-        return view('admin.absen.kelasTerbatas.detail-absen', compact(['absen', 'kelas', 'user']));
+        return view('admin.absen.kelasTerbatas.detail-absen', compact(['absen', 'kelas', 'absensi_user']));
     }
 
     /**
@@ -153,7 +152,7 @@ class AbsensiTerbatasController extends Controller
             foreach($user as $u) {
                 AbsensiUser::create([
                     'user_id' => $u->user_id,
-                    'absensi_id' => $absen->id,
+                    'absensi_id' => $id,
                 ]);
             }
 
@@ -164,7 +163,7 @@ class AbsensiTerbatasController extends Controller
     }
 
     public function absen_update($id, $status) {
-        $absensi_user = Absensiuser::find($id);
+        $absensi_user = AbsensiUser::find($id);
 
         switch($status) {
             case 'hadir':
@@ -197,5 +196,23 @@ class AbsensiTerbatasController extends Controller
         
         $pdf = \PDF::loadView('admin.absen.cetak.cetak', compact(['absen', 'kelas', 'user']));
         return $pdf->download('absen-'.$kelas->kategori.'-'.$absen->tanggal.'-'.$kelas->nama_kelas.'.pdf');
+    }
+    
+    public function pdfRekap()
+    {
+        // $absen = Absensi::all();
+        // $user = Absensi::all();
+        // $kelas = Kelas::all();
+        // $kelas = Kelas::where('kategori', 'sd/mi')->where('kategori_kelas', 'terbatas')->get();
+        // $kategori = 'SD/MI';
+        $kelas = Kelas::where('kategori', 'sma/ma-ips')->where('kategori_kelas', 'terbatas')->get();
+        $kategori = 'SMA/MA-IPS';
+        // dd($absen, $user, $kelas);
+        // die();
+        
+        
+        $pdf = \PDF::loadView('admin.absen.cetak.rekap', compact(['kelas']));
+        return $pdf->stream('Rekap-absen.pdf', array("Attachment" => false));
+        // return $pdf->download('absen-'.$kelas->kategori.'-'.$absen->tanggal.'-'.$kelas->nama_kelas.'.pdf');
     }
 }

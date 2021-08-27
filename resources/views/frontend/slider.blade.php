@@ -20,7 +20,7 @@
 
                         <!-- Hero-btn -->
                         <div class="hero__btn" data-animation="fadeInLeft" data-delay=".8s">
-                            <!-- <a  href="#" class="btn hero-btn">Learn More</a> -->
+                            {{-- <a  href="#" class="btn hero-btn">Learn More</a> --}}
                         </div>
                     </div>
                 </div>

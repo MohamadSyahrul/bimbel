@@ -32,6 +32,8 @@
     <link href="http://traineasyv3.intermaticsng.com/css/fix.css" rel="stylesheet" />
 
     <link rel="stylesheet" href="http://traineasyv3.intermaticsng.com/css/templates/bhome.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-91959012-2"></script>
     <script>

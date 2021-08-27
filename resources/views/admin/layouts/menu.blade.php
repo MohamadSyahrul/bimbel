@@ -52,6 +52,10 @@
                                 </li>
                             </ul>
                         </li>
+                        <li><a href="#"><i class="feather icon-user-check"></i><span class="menu-item" data-i18n="View">Rekap Absensi</span></a>
+                            <ul class="menu-content">
+                            </ul>
+                        </li>
                     </ul>
                 </li>
                 <li class=" nav-item {{  request()->routeIs('transaksi.*') ? 'active' : '' }}">
@@ -71,6 +75,9 @@
                 <li class=" nav-item {{  request()->routeIs('settings-carousel.*') ? 'active' : '' }}"><a href="#"><i class="feather icon-settings"></i><span class="menu-title" data-i18n="Miscellaneous">Settings</span></a>
                     <ul class="menu-content">
                         <li><a href="{{url('admin/settings-carousel')}}"><i class="feather icon-sidebar"></i><span class="menu-item" data-i18n="slider carousel">Slider Carousel</span></a>
+                        </li>
+                        <li>
+                            <a href="{{route('management-user.index')}}"><i class="feather icon-lock"></i><span class="menu-item" data-i18n="Managemen User">Managemen User</span></a>
                         </li>
                     </ul>
                 </li>

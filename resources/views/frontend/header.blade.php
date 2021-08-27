@@ -72,9 +72,9 @@
 
                             <div class="col-xl-2 col-lg-3 col-md-3">
                                 <div class="header-right-btn f-right d-none d-lg-block">
-                                    <a href="{{ url('listkeranjang') }}"
+                                    {{-- <a href="{{ url('listkeranjang') }}"
                                         style="padding: 18px 22px;    text-align: center;" class="tbtn header-btn">
-                                        <i class="fa "></i>Keranjang Anda</a>
+                                        <i class="fa "></i>Keranjang Anda</a> --}}
                                 </div>
                             </div>
 

@@ -19,6 +19,79 @@ Absen Siswa {{ $kategori }}
                     <div class="card">
                         <div class="card-header">
                             <h4 class="card-title">Absen Siswa Terbatas | <span class="text-uppercase">{{ $kategori }}</span></h4>
+                            
+                            <script type="text/javascript">     
+                                function PrintDiv() {    
+                                var divToPrint = document.getElementById('divToPrint');
+                                var popupWin = window.open('', '_blank');
+                                popupWin.document.open();
+                                popupWin.document.write('<html><body onload="window.print()">' + divToPrint.innerHTML + '</html>');
+                                    popupWin.document.close();
+                                        }
+                            </script>
+
+
+
+
+                            <div id="divToPrint" style="display:none;">
+                                <div class="card-content">
+                                    <center>
+                                    <h4 class="card-title">Absen Siswa | <span class="text-uppercase">{{ $kategori }}</span></h4>
+                                    <table class="table"
+                                        style=
+                                        "
+                                            width:100%;
+                                            text-align: center;
+                                            border: solid 1px black;
+                                        ">
+                                        <thead class="">
+                                            <tr>
+                                                <th>Tanggal</th>
+                                                <th>Kelas</th>
+                                                <th>Kategori</th>
+                                                <th>Siswa</th>
+                                                <th>Hadir</th>
+                                                <th>Izin</th>
+                                                <th>Tidak hadir</th>
+                                                
+                                            </tr>
+                                        </thead>
+                                        <tbody class="">
+                                        @foreach($kelas as $kel)
+                                            @foreach($kel->absensi->sortDesc() as $a)
+                                            <?php
+                                                $total  = \App\AbsensiUser::join('absensis', 'absensis.id', '=', 'absensi_users.absensi_id')
+                                                ->where('absensi_id', '=', $a->id)->where('id_kelas','=', $kel->id)->get()->count();
+                                                $hadir  = \App\AbsensiUser::join('absensis', 'absensis.id', '=', 'absensi_users.absensi_id')
+                                                ->where('status','hadir')->where('absensi_id', '=', $a->id)->where('id_kelas','=', $kel->id)->get()->count();
+                                                $thadir = \App\AbsensiUser::join('absensis', 'absensis.id', '=', 'absensi_users.absensi_id')
+                                                ->where('status','tidak hadir')->where('absensi_id', '=', $a->id)->where('id_kelas','=', $kel->id)->get()->count();
+                                                $izin   = \App\AbsensiUser::join('absensis', 'absensis.id', '=', 'absensi_users.absensi_id')
+                                                ->where('status','izin')->where('absensi_id', '=', $a->id)->where('id_kelas','=', $kel->id)->get()->count();
+                                                $none   = \App\AbsensiUser::join('absensis', 'absensis.id', '=', 'absensi_users.absensi_id')
+                                                ->where('status','none')->where('absensi_id', '=', $a->id)->where('id_kelas','=', $kel->id)->get()->count();
+                                            ?>
+                                            <tr>
+                                                <td>{{ $a->tanggal }}</td>
+                                                <td>{{ $kel->nama_kelas }}</td>
+                                                <td>{{ $kel->kategori_kelas }}</td>
+                                                <td>{{ $total }}</td>
+                                                <td>{{ $hadir }}</td>
+                                                <td>{{ $izin }}</td>
+                                                <td>{{ $thadir }}</td>
+                                                
+                                            </tr>
+                                            @endforeach
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                </center>              
+                            </div>
+                            </div>
+                            <div>
+                            <input type="button" class="btn btn-icon btn-outline-primary float-right mr-1 mb-1" value="rekap" onclick="PrintDiv();" />
+                            </div>
+
                             <a role="button" href="#" class="btn btn-icon btn-outline-primary float-right mr-1 mb-1"
                                 title="tambah tanggal" data-toggle="modal" data-target="#addDate"><i class="feather icon-calendar"></i> Add</a>
                         </div>
@@ -42,7 +115,7 @@ Absen Siswa {{ $kategori }}
                                                 <td>{{ $kel->nama_kelas }}</td>
                                                 <td class="text-uppercase">{{ $kel->kategori }}</td>
                                                 <td>
-                                                    <a href="{{ route('cetak', [$a->id]) }}" class="avatar bg-primary" title="Cetak">
+                                                    <a href="{{ route('cetak', [$a->id]) }}" class="avatar bg-primary" title="Cetak" target="_blank">
                                                         <div class="avatar-content">
                                                                 <i class="avatar-icon text-white feather icon-book"></i>
                                                         </div>
@@ -116,6 +189,7 @@ Absen Siswa {{ $kategori }}
 
     </div>
 </div>
+
 @endsection
 @push('plugin-scripts')
 <script src="{{asset('/app-assets/vendors/js/tables/datatable/datatables.min.js')}}"></script>

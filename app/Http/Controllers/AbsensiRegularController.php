@@ -97,11 +97,11 @@ class AbsensiRegularController extends Controller
     {
         //
         $absen = Absensi::find($id);
-        $user = Absensi::find($id)->user;
-        // dd($user);
         $kelas = Kelas::find($absen->id_kelas);
+        $absensi_user = AbsensiUser::where('absensi_id', $id)->get();
+        // dd($user);
 
-        return view('admin.absen.kelasRegular.detail-absen', compact(['absen', 'kelas', 'user']));
+        return view('admin.absen.kelasRegular.detail-absen', compact(['absen', 'kelas', 'absensi_user']));
     }
 
     /**

@@ -56,6 +56,7 @@ Route::middleware(['auth'])->group(function() {
         Route::resource('settings-carousel', 'CarouselController');
         Route::post('/settings-carousel/update', 'CarouselController@updateCarousel')->name('updateCarousel');
 
+        Route::resource('management-user', 'ManagemenuserController');
         // Route::get('/profil', function () {
         //     return view('admin.profil');
         // });
@@ -133,8 +134,13 @@ Route::middleware(['auth'])->group(function() {
         // Transaksi
         Route::resource('transaksi', 'TransaksiController');
         
-        //cetak PDF
+        //cetak 
         Route::get('/terbatas/absen-siswa-terbatas/cetak/{id}', 'AbsensiTerbatasController@pdf')->name('cetak');
+        Route::get('/terbatas/absen-siswa-terbatas/rekap/', 'AbsensiTerbatasController@pdfRekap')->name('cetakRekap');
+
+        Route::get('/rekap/absensi', function () {
+            return view('admin.rekapabsen.rekapabsen');
+        });
     });
 
     // Route Siswa

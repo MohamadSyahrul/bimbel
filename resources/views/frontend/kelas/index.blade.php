@@ -27,7 +27,7 @@ Kelas
                         <h4><a href="{{ url('/kelas/'.$t->id) }}">{{ $t->nama_kelas }}</a></h4>
                         <p>Siswa akan mendapatkan kaos, modul dan fasilitas kelas yang nyaman dengan AC</p>
                         <a href="{{ url('/kelas/'.$t->id) }}" class="btn btn-primary float-right btn-sm">
-                            <i class="fa "></i> Detail
+                            <i class="fas fa-info-circle"></i> Detail
                         </a>
                     </div>
                 </div>
@@ -61,7 +61,7 @@ Kelas
                         <h4><a href="{{ url('/kelas/'.$r->id) }}">{{ $r->nama_kelas }}</a></h4>
                         <p>Siswa akan mendapatkan kaos, modul dan fasilitas kelas yang nyaman dengan AC</p>
                         <a href="{{ url('/kelas/'.$r->id) }}" class="btn btn-primary float-right btn-sm">
-                            <i class="fa "></i> Detail
+                            <i class="fas fa-info-circle"></i> Detail
                         </a>
                     </div>
                 </div>
