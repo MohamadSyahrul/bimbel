@@ -40,7 +40,7 @@ Jadwal Kelas Terbatas
                     <div class="card">
                         <div class="card-content">
                             <div class="card-body">
-                                <h2>Jadwal Kelas</h2>
+                                <h2>Jadwal Kelas Terbatas</h2>
                                 <hr>
                                 
                                 <!-- <div id='fc-default'></div> -->
@@ -57,49 +57,46 @@ Jadwal Kelas Terbatas
                     role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h4 class="modal-title text-text-bold-600" id="cal-modal">Add Event</h4>
+                            <h4 class="modal-title text-text-bold-600" id="cal-modal">Tambah Jadwal</h4>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">×</span>
                             </button>
                         </div>
                         <form id="form-add">
-                            
                             <div class="modal-body">
                                 <div class="d-flex justify-content-between align-items-center add-category">
                                     <div class="chip-wrapper"></div>
                                 </div>
                                 <fieldset class="form-label-group">
                                     <input type="text" class="form-control" id="cal-event-title"
-                                        placeholder="Event Title" name="title" required>
+                                        placeholder="Jadwal Title" name="title" required>
                                     <label for="cal-event-title">Jadwal Title</label>
                                 </fieldset>
                                 <fieldset class="form-label-group">
-                                    <input type="text" class="form-control pickadate" id="cal-start-date"
-                                        placeholder="Start Date">
+                                    <input type="text" class="form-control pickadate" name="start" id="cal-start-date"
+                                        placeholder="Start Date" value="" disabled>
                                     <label for="cal-start-date">Start Date</label>
                                 </fieldset>
                                 <fieldset class="form-label-group">
-                                    <input type="text" class="form-control pickadate" id="cal-end-date"
-                                        placeholder="End Date">
+                                    <input type="text" class="form-control pickadate" name="end" id="cal-end-date"
+                                        placeholder="End Date" value="" disabled>
                                     <label for="cal-end-date">End Date</label>
                                 </fieldset>
                                 <fieldset class="form-label-group">
-                                    <textarea class="form-control" id="cal-description" rows="5"
-                                        placeholder="Description" name="desc" required></textarea>
-                                    <label for="cal-description">Description</label>
+                                    <select name="kelas_id" id="kelas_id" class="form-control" required>
+                                        <option value="" selected disabled>Pilih Kelas</option>
+                                        @foreach($kelas as $k)
+                                            <option value="{{ $k->id }}">{{ $k->nama_kelas }}</option>
+                                        @endforeach
+                                    </select>
+                                    <label for="cal-description">Kelas</label>
                                 </fieldset>
                             </div>
                             <div class="modal-footer">
-                                <button class="btn btn-primary cal-add-event waves-effect waves-light" id="btn-add">Add</button>
-                                <!-- <button type="button"
-                                    class="btn btn-primary d-none cal-submit-event waves-effect waves-light"
-                                    disabled>submit</button> -->
+                                <button type="button" class="btn btn-primary waves-effect waves-light" onclick="btnAdd()" id="btn-add">Add</button>
                                 <button type="button"
                                     class="btn btn-flat-danger cancel-event waves-effect waves-light"
                                     data-dismiss="modal">Cancel</button>
-                                <!-- <button type="button"
-                                    class="btn btn-flat-danger remove-event d-none waves-effect waves-light"
-                                    data-dismiss="modal">Remove</button> -->
                             </div>
                         </form>
                     </div>
@@ -134,7 +131,6 @@ Jadwal Kelas Terbatas
 <script>
 
 var site_url = "/admin/jadwal-kelas-terbatas"
-var calendarEl = document.getElementById('sfs');
 
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -160,43 +156,12 @@ document.addEventListener('DOMContentLoaded', function () {
         selectHelper: true,
         select: function(start, end, allDay) {
 
-            var title = prompt('Jadwal Title:');
-            if(title != null) {
-                var desc = prompt('Desc:');
-            }
-            // $(".modal-calendar").modal("show");
-            if(title) {
-                // var title = document.getElementById('cal-event-title').value;
-                // var desc = document.getElementById('cal-description').value;
-                var start = $.fullCalendar.formatDate(start, "Y-MM-DD");
-                var end = $.fullCalendar.formatDate(end, "Y-MM-DD");
-                $.ajax({
-                    url: site_url + "/jadwal",
-                    data: {
-                        title: title,
-                        start: start,
-                        end: end,
-                        desc: desc,
-                        type: 'add'
-                    },
-                    type: "POST",
-                    success: function(data) {
-                        displayMessage("Jadwal berhasil ditambahkan !");
+            var start_date = $.fullCalendar.formatDate(start, "Y-MM-DD");
+            var end_date = $.fullCalendar.formatDate(end, "Y-MM-DD");
+            $('#cal-start-date').val(start_date);
+            $('#cal-end-date').val(end_date);
+            $('.modal-calendar').modal('show');
 
-                        calendar.fullCalendar('renderEvent', {
-                            id: data.id,
-                            title: title,
-                            desc: desc,
-                            start: start,
-                            end: end,
-                            allDay: allDay
-                        }, true);
-
-                        calendar.fullCalendar('unselect');
-                        $('.modal-calendar').modal('hide');
-                    }
-                });
-            }
         },
 
         eventDrop: function(event, delta) {
@@ -233,7 +198,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     success: function(response) {
 
                         calendar.fullCalendar('removeEvents', event.id);
-                        displayMessage("Event Deleted Successfully");
+                        displayMessage("Jadwal berhasi dihapus !");
                     }
                 });
             }
@@ -241,43 +206,44 @@ document.addEventListener('DOMContentLoaded', function () {
 
     });
 
+
 });
 
-// $("#btn-add").click(function(){
-//     console.log(1)
-//     var title = document.getElementById('cal-event-title').value;
-//     var desc = document.getElementById('cal-description').value;
-//     var start = $.fullCalendar.formatDate(start, "Y-MM-DD");
-//     var end = $.fullCalendar.formatDate(end, "Y-MM-DD");
-//     $.ajax({
-//         url: site_url + "/jadwal",
-//         data: {
-//             title: title,
-//             start: start,
-//             end: end,
-//             desc: desc,
-//             type: 'add'
-//         },
-//         type: "POST",
-//         success: function(data) {
-//             displayMessage("Jadwal berhasil ditambahkan !");
+function btnAdd() {
+    var title = $('#cal-event-title').val();
+    var start = $('#cal-start-date').val();
+    var end = $('#cal-end-date').val();
+    var kelas_id = $('#kelas_id').val();
+    $.ajax({
+        url: site_url + "/jadwal",
+        data: {
+            title: title,
+            start: start,
+            end: end,
+            kelas_id: kelas_id,
+            type: 'add'
+        },
+        type: "POST",
+        success: function(data) {
+            displayMessage("Jadwal berhasil ditambahkan !");
 
-//             calendar.fullCalendar('renderEvent', {
-//                 id: data.id,
-//                 title: title,
-//                 start: start,
-//                 end: end,
-//                 allDay: allDay
-//             }, true);
+            $('#calendar').fullCalendar('renderEvent', {
+                id: data.id,
+                title: title,
+                kelas_id: kelas_id,
+                start: start,
+                end: end,
+                allDay: true
+            });
 
-//             calendar.fullCalendar('unselect');
-//             $('.modal-calendar').modal('hide');
-//         }
-//     });
-// });
+            $('#calendar').fullCalendar('unselect');
+            $('.modal-calendar').modal('hide');
+        }
+    });
+}
 
 function displayMessage(message) {
-    toastr.success(message, 'Event');
+    toastr.success(message, 'Jadwal');
 }
 
 </script>

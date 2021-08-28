@@ -26,8 +26,8 @@ class JadwalTerbatasController extends Controller
             return response()->json($data);
         }
 
-        // $kelas = Kelas::where('kategori_kelas', 'terbatas')->get();
-        return view('admin.jadwal.terbatas.index');
+        $kelas = Kelas::where('kategori_kelas', 'terbatas')->get();
+        return view('admin.jadwal.terbatas.index', compact('kelas'));
     }
 
     public function jadwal(Request $request)
@@ -40,7 +40,7 @@ class JadwalTerbatasController extends Controller
                     'title' => $request->title,
                     'start' => $request->start,
                     'end' => $request->end,
-                    'desc' => $request->desc,
+                    'kelas_id' => $request->kelas_id,
                     'kategori_kelas' => 'terbatas'
                 ]);
 
@@ -50,10 +50,8 @@ class JadwalTerbatasController extends Controller
             // Update Jadwal        
             case 'update':
                 $event = Jadwal::find($request->id)->update([
-                    'title' => $request->title,
                     'start' => $request->start,
                     'end' => $request->end,
-                    'desc' => $request->desc
                 ]);
 
                 return response()->json($event);

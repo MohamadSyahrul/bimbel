@@ -22,7 +22,8 @@ class CreateProfileUsersTable extends Migration
             $table->string('nama_wali')->nullable();
             $table->string('no_hp_wali')->nullable();
             $table->string('email_wali')->nullable();
-            $table->foreignId('id_user')->references('id')->on('users');
+            $table->boolean('cek_akun_ortu')->default(false);
+            $table->foreignId('id_user')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

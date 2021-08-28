@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'role'
     ];
 
     /**
@@ -41,6 +41,10 @@ class User extends Authenticatable
         return $this->hasOne('App\ProfileUser', 'id_user');
     }
 
+    public function profileOrtu() {
+        return $this->hasOne('App\ProfileOrtu', 'user_id');
+    }
+
     public function transaksi() {
         return $this->hasMany(Transaksi::class, 'user_id');
     }
@@ -51,5 +55,9 @@ class User extends Authenticatable
 
     public function absensi() {
         return $this->belongsToMany(Absensi::class, 'absensi_users');
+    }
+
+    public function absensi_user() {
+        return $this->belongsToMany(AbsensiUser::class, 'user_id');
     }
 }

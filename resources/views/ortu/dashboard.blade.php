@@ -1,12 +1,11 @@
-@extends('pengguna.layouts.master')
+@extends('ortu.layouts.master')
 
 @section('title')
 Dashboard Ortu
 @endsection
 
 @push('plugin-styles')
-<link rel="stylesheet" type="text/css" href="{{asset('/app-assets/vendors/css/vendors.min.css')}}">
-<link rel="stylesheet" type="text/css" href="{{asset('/app-assets/vendors/css/tables/datatable/datatables.min.css')}}">
+
 @endpush
 
 @section('content')
@@ -34,7 +33,7 @@ Dashboard Ortu
                                 </div>
                                 <div class="text-center">
                                     <h1 class="mb-2 text-white">Selamat Datang Di Dashboard Dasapratama</h1>
-                                    <p class="m-auto w-75">Selamat Belajar Dan Merai Masa depan dengan <strong>Dasapratama</strong></p>
+                                    <p class="m-auto w-75">Pantau anak anda bersama <strong>Dasapratama</strong></p>
                                 </div>
                             </div>
                         </div>
@@ -50,14 +49,5 @@ Dashboard Ortu
 @endsection('content')
 
 @push('plugin-scripts')
-<script src="{{asset('/app-assets/vendors/js/tables/datatable/datatables.min.js')}}"></script>
-<script src="{{asset('/app-assets/vendors/js/tables/datatable/datatables.buttons.min.js')}}"></script>
-<script src="{{asset('/app-assets/vendors/js/tables/datatable/datatables.bootstrap4.min.js')}}"></script>
-<script src="{{asset('/app-assets/js/scripts/datatables/datatable.js')}}"></script>
 
-<script>
-    function kelas(id) {
-        window.location.href = "{!! url('/kelas/"+id+"') !!}"
-    }
-</script>
 @endpush

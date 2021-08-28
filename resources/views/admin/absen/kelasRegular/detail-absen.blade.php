@@ -42,64 +42,59 @@ Absen Siswa {{ $kelas->kategori }} - {{ $absen->tanggal }}
                                             </tr>
                                         </thead>
                                         <tbody class="">
-                                            @foreach($user as $u)
+                                            @foreach($absensi_user as $a)
                                             <tr>
-                                                <td>1</td>
-                                                <td>{{ $u->profileUser->nama }}</td>
-                                                <td>{{ $u->email }}</td>
+                                                <?php
+                                                    $user = \App\User::find($a->user_id);
+                                                ?>
+                                                <td>{{ $loop->iteration }}</td>
+                                                <td>{{ $user->profileUser->nama }}</td>
+                                                <td>{{ $user->email }}</td>
                                                 <td>
-                                                    <?php
-                                                        $s = \App\AbsensiUser::where('user_id', $u->id)->first();
-                                                    ?>
-                                                    @switch($s->status)
-                                                    @case('hadir')
-                                                    <div class="chip chip-success">
-                                                        <div class="chip-body">
-                                                            <div class="chip-text">Hadir</div>
-                                                        </div>
-                                                    </div>
-                                                    @break
-                                                    @case('izin')
-                                                    <div class="chip chip-warning">
-                                                        <div class="chip-body">
-                                                            <div class="chip-text">Izin</div>
-                                                        </div>
-                                                    </div>
-                                                    @break
-                                                    @case('tidak hadir')
-                                                    <div class="chip chip-danger">
-                                                        <div class="chip-body">
-                                                            <div class="chip-text">Tidak Hadir</div>
-                                                        </div>
-                                                    </div>
-                                                    @break
-                                                    @default
-                                                    <div class="chip chip-secondary">
-                                                        <div class="chip-body">
-                                                            <div class="chip-text">None</div>
-                                                        </div>
-                                                    </div>
+                                                    @switch($a->status)
+                                                        @case('hadir')
+                                                            <div class="chip chip-success">
+                                                                <div class="chip-body">
+                                                                    <div class="chip-text">Hadir</div>
+                                                                </div>
+                                                            </div>
+                                                            @break
+                                                        @case('izin')
+                                                            <div class="chip chip-warning">
+                                                                <div class="chip-body">
+                                                                    <div class="chip-text">Izin</div>
+                                                                </div>
+                                                            </div>
+                                                            @break
+                                                        @case('tidak hadir')
+                                                            <div class="chip chip-danger">
+                                                                <div class="chip-body">
+                                                                    <div class="chip-text">Tidak Hadir</div>
+                                                                </div>
+                                                            </div>
+                                                            @break
+                                                        @default
+                                                            <div class="chip chip-secondary">
+                                                                <div class="chip-body">
+                                                                    <div class="chip-text">None</div>
+                                                                </div>
+                                                            </div>
                                                     @endswitch
                                                 </td>
                                                 <td>
-                                                    <a href="{{ route('absenUpdateReg', ['id'=>$s->id, 'status'=>'hadir']) }}"
-                                                        class="avatar bg-success" title="masuk">
+                                                    <a href="{{ route('absenUpdate', ['id'=>$a->id, 'status'=>'hadir']) }}" class="avatar bg-success" title="masuk">
                                                         <div class="avatar-content">
-                                                            <i
-                                                                class="avatar-icon text-white feather icon-check-square"></i>
+                                                                <i class="avatar-icon text-white feather icon-check-square"></i>
                                                         </div>
                                                     </a>
-                                                    <a href="{{ route('absenUpdateReg', ['id'=>$s->id, 'status'=>'izin']) }}"
-                                                        class="avatar bg-warning" title="izin">
+                                                    <a href="{{ route('absenUpdate', ['id'=>$a->id, 'status'=>'izin']) }}" class="avatar bg-warning" title="izin">
                                                         <div class="avatar-content">
-                                                            <i
-                                                                class="avatar-icon text-white feather icon-alert-circle"></i>
+                                                                <i class="avatar-icon text-white feather icon-alert-circle"></i>
                                                         </div>
                                                     </a>
-                                                    <a href="{{ route('absenUpdateReg', ['id'=>$s->id, 'status'=>'tidak']) }}"
-                                                        class="avatar bg-danger" title="tidak masuk">
+                                                    <a href="{{ route('absenUpdate', ['id'=>$a->id, 'status'=>'tidak']) }}" class="avatar bg-danger" title="tidak masuk">
                                                         <div class="avatar-content">
-                                                            <i class="avatar-icon text-white feather icon-x-square"></i>
+                                                                <i class="avatar-icon text-white feather icon-x-square"></i>
                                                         </div>
                                                     </a>
                                                 </td>

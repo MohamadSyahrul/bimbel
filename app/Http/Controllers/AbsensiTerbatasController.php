@@ -97,12 +97,11 @@ class AbsensiTerbatasController extends Controller
     {
         //
         $absen = Absensi::find($id);
-        $user = Absensi::find($id)->user;
         $kelas = Kelas::find($absen->id_kelas);
-        // dd($user);
-        // die();
+        $absensi_user = AbsensiUser::where('absensi_id', $id)->get();
+        // dd($absensi_user);
 
-        return view('admin.absen.kelasTerbatas.detail-absen', compact(['absen', 'kelas', 'user']));
+        return view('admin.absen.kelasTerbatas.detail-absen', compact(['absen', 'kelas', 'absensi_user']));
     }
 
     /**
@@ -153,7 +152,7 @@ class AbsensiTerbatasController extends Controller
             foreach($user as $u) {
                 AbsensiUser::create([
                     'user_id' => $u->user_id,
-                    'absensi_id' => $absen->id,
+                    'absensi_id' => $id,
                 ]);
             }
 
@@ -164,7 +163,7 @@ class AbsensiTerbatasController extends Controller
     }
 
     public function absen_update($id, $status) {
-        $absensi_user = Absensiuser::find($id);
+        $absensi_user = AbsensiUser::find($id);
 
         switch($status) {
             case 'hadir':

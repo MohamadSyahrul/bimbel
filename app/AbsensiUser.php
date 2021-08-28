@@ -12,4 +12,8 @@ class AbsensiUser extends Model
     public function absensi() {
         return $this->belongsTo(Absensi::class, 'id');
     }
+
+    public function user() {
+        return $this->belongsTo(User::class, 'id');
+    }
 }

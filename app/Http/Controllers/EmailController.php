@@ -1,32 +1,19 @@
 <?php
 
-namespace App\Http\Controllers\Ortu;
+namespace App\Http\Controllers;
 
-use App\Jadwal;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 
-class OrtuController extends Controller
+class EmailController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index( Request $request)
+    public function index()
     {
-         //
-         if ($request->ajax()) {
-
-            $data = Jadwal::whereDate('start', '>=', $request->start)
-                ->whereDate('end',   '<=', $request->end)
-                ->get();
-
-            return response()->json($data);
-        }
-
-        // $kelas = Kelas::where('kategori_kelas', 'terbatas')->get();
-        return view('ortu.jadwal');
+        //
     }
 
     /**

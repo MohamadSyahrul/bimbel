@@ -1,41 +1,27 @@
 <?php
 
-namespace App\Http\Controllers\Siswa;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use App\Jadwal;
-use App\Kelas;
-use App\Transaksi;
+use App\Rules\MatchOldPassword;
+use Illuminate\Support\Facades\Hash;
+use App\User;
 
-class JadwalSiswaController extends Controller
+class ChangePasswordController extends Controller
 {
+    // public function __construct()
+    // {
+    //     $this->middleware('verified');
+    // }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
         //
-        if ($request->ajax()) {
-
-            $kelas = Transaksi::where('user_id', Auth::user()->id)
-                ->where('status_bayar', 'lunas')
-                ->select('kelas_id')
-                ->get();
-
-            $data = Jadwal::whereIn('kelas_id', $kelas)
-                ->whereDate('start', '>=', $request->start)
-                ->whereDate('end',   '<=', $request->end)
-                ->get();
-
-            return response()->json($data);
-        }
-
-        // $kelas = Kelas::where('kategori_kelas', 'terbatas')->get();
-        return view('pengguna.jadwal');
+        return view('change-password');
     }
 
     /**
@@ -57,6 +43,18 @@ class JadwalSiswaController extends Controller
     public function store(Request $request)
     {
         //
+        $request->validate([
+            'current_password' => ['required', new MatchOldPassword],
+            'new_password' => ['required'],
+            'new_confirm_password' => ['same:new_password'],
+        ]);
+   
+        User::find(auth()->user()->id)->update([
+            'name' => $request->name, 
+            'password'=> Hash::make($request->new_password)
+        ]);
+   
+        return back()->with('status', 'Berhasil diperbarui !!');
     }
 
     /**

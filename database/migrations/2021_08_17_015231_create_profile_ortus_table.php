@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateJadwalsTable extends Migration
+class CreateProfileOrtusTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,10 @@ class CreateJadwalsTable extends Migration
      */
     public function up()
     {
-        Schema::create('jadwals', function (Blueprint $table) {
+        Schema::create('profile_ortus', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->date('start');
-            $table->date('end');
-            $table->enum('kategori_kelas', ['terbatas', 'regular']);
-            $table->foreignId('kelas_id')->references('id')->on('kelas')->onDelete('cascade');
+            $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreignId('siswa_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -31,6 +28,6 @@ class CreateJadwalsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('jadwals');
+        Schema::dropIfExists('profile_ortus');
     }
 }

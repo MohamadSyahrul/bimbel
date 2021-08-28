@@ -1,6 +1,6 @@
-@extends('pengguna.layouts.master')
+@extends('ortu.layouts.master')
 @section('title')
-Absen | Role Ortu
+    Absen Siswa
 @endsection
 @push('plugin-styles')
 <link rel="stylesheet" type="text/css" href="{{asset('/app-assets/vendors/css/vendors.min.css')}}">
@@ -24,36 +24,61 @@ Absen | Role Ortu
                             <div class="card-body card-dashboard">
                                 <div class="table-responsive">
                                     <table class="table zero-configuration">
-                                        <thead>
+                                        <thead class="">
                                             <tr>
+                                                <th>Tanggal</th>
                                                 <th>Nama</th>
                                                 <th>Kelas</th>
-                                                <th>Kategori</th>
-                                                <th>Hadir</th>
-                                                <th>Izin</th>
-                                                <th>Tidak Hadir</th>
+                                                <th>Paket</th>
+                                                <th>Status</th>
                                             </tr>
                                         </thead>
                                         <tbody class="">
-                                            @foreach($absen as $a)
+                                        @foreach($absen as $a)
                                             @foreach($a->absensiUser as $ab)
                                             <tr>
                                                 <?php
                                                     $user = \App\User::find($ab->user_id);
                                                     $kelas = \App\Kelas::find($a->id_kelas);
                                                 ?>
+                                                <td>{{ Carbon\Carbon::parse($a->tanggal)->isoFormat('dddd, D MMMM Y') }}</td>
                                                 <td>{{ $user->profileUser->nama }}</td>
                                                 <td class="text->uppercase">{{ $kelas->kategori }}</td>
                                                 <td class="text-capitalize">{{ $kelas->kategori_kelas }}</td>
-                                                
-                                                <td class="text-capitalize">{{ $hadir }}</td>
-                                                <td class="text-capitalize">{{ $izin }}</td>
-                                                <td class="text-capitalize">{{ $tidak }}</td>
-
-
+                                                <td>
+                                                    @switch($ab->status)
+                                                        @case('hadir')
+                                                            <div class="chip chip-success">
+                                                                <div class="chip-body">
+                                                                    <div class="chip-text">Hadir</div>
+                                                                </div>
+                                                            </div>
+                                                            @break
+                                                        @case('izin')
+                                                            <div class="chip chip-warning">
+                                                                <div class="chip-body">
+                                                                    <div class="chip-text">Izin</div>
+                                                                </div>
+                                                            </div>
+                                                            @break
+                                                        @case('tidak hadir')
+                                                            <div class="chip chip-danger">
+                                                                <div class="chip-body">
+                                                                    <div class="chip-text">Tidak Hadir</div>
+                                                                </div>
+                                                            </div>
+                                                            @break
+                                                        @default
+                                                            <div class="chip chip-secondary">
+                                                                <div class="chip-body">
+                                                                    <div class="chip-text">None</div>
+                                                                </div>
+                                                            </div>
+                                                    @endswitch
+                                                </td>
                                             </tr>
                                             @endforeach
-                                            @endforeach
+                                        @endforeach
                                         </tbody>
                                     </table>
                                 </div>

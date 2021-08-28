@@ -2,8 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\ProfileUser;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
+use App\Mail\SendMail;
+use App\ProfileUser;
+use App\ProfileOrtu;
+use App\User;
+use Hash;
 
 class ProfileUserController extends Controller
 {
@@ -77,7 +82,28 @@ class ProfileUserController extends Controller
         //
         $profile = ProfileUser::find($id);
 
+        if($profile->cek_akun_ortu == 1) {
+            $profile->update($request->all());
+            return back()->with('status', 'Data diri berhasil diperbarui');
+        }
+
+        $profile->update([
+            'cek_akun_ortu'=>1
+        ]);
         $profile->update($request->all());
+
+        $ortu = User::create([
+            'name'=>$profile->nama_wali,
+            'role'=>'ortu',
+            'email'=>$profile->email_wali,
+            'password'=>Hash::make('dasapratama'),
+        ]);
+
+        ProfileOrtu::create([
+            'user_id'=>$ortu->id,
+            'siswa_id'=>$profile->id_user
+        ]);
+        // Mail::to($pembeli->email_pembeli)->send(new SendMail($riwayat));
 
         return back()->with('status', 'Data diri berhasil diperbarui');
     }

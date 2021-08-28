@@ -1,12 +1,16 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Ortu;
 
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Jadwal;
 use App\Kelas;
+use App\Transaksi;
+use App\ProfileOrtu;
 
-class JadwalRegularController extends Controller
+class JadwalController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,9 +20,15 @@ class JadwalRegularController extends Controller
     public function index(Request $request)
     {
         //
+        $profileOrtu = ProfileOrtu::where('user_id', Auth::user()->id)->first();
         if ($request->ajax()) {
 
-            $data = Jadwal::where('kategori_kelas', 'regular')
+            $kelas = Transaksi::where('user_id', $profileOrtu->siswa_id)
+                ->where('status_bayar', 'lunas')
+                ->select('kelas_id')
+                ->get();
+
+            $data = Jadwal::whereIn('kelas_id', $kelas)
                 ->whereDate('start', '>=', $request->start)
                 ->whereDate('end',   '<=', $request->end)
                 ->get();
@@ -26,47 +36,8 @@ class JadwalRegularController extends Controller
             return response()->json($data);
         }
 
-        $kelas = Kelas::where('kategori_kelas', 'regular')->get();
-        return view('admin.jadwal.regular.index', compact('kelas'));
-    }
-
-    public function jadwal(Request $request)
-    {
-        switch ($request->type) {
-
-            // Add jadwal
-            case 'add':
-                $event = Jadwal::create([
-                    'title' => $request->title,
-                    'start' => $request->start,
-                    'end' => $request->end,
-                    'kelas_id' => $request->kelas_id,
-                    'kategori_kelas' => 'regular'
-                ]);
-
-                return response()->json($event);
-                break;
-
-            // Update Jadwal        
-            case 'update':
-                $event = Jadwal::find($request->id)->update([
-                    'start' => $request->start,
-                    'end' => $request->end,
-                ]);
-
-                return response()->json($event);
-                break;
-
-            // Delete Jadwal    
-            case 'delete':
-                $event = Jadwal::find($request->id)->delete();
-
-                return response()->json($event);
-                break;
-
-            default:
-                break;
-        }
+        // $kelas = Kelas::where('kategori_kelas', 'terbatas')->get();
+        return view('ortu.jadwal');
     }
 
     /**

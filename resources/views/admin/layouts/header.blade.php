@@ -58,6 +58,7 @@
                         <div class="dropdown-menu dropdown-menu-right">
                             <!-- <a class="dropdown-item" href="{{ url ('profil')}}"><i class="feather icon-user"></i> Profil</a> -->
                             <!-- <div class="dropdown-divider"></div> -->
+                            <a class="dropdown-item" href="{{ route('change') }}"><i class="feather icon-lock"></i> Change Password</a>
                             <a class="dropdown-item"
                                 onclick="event.preventDefault();document.getElementById('logout-form').submit();"><i
                                     class="feather icon-power"></i> Logout</a>

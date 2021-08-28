@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Ortu;
 
-use App\Absensi;
-use App\AbsensiUser;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Absensi;
+use App\ProfileOrtu;
 
 class AbsenController extends Controller
 {
@@ -18,22 +18,16 @@ class AbsenController extends Controller
     public function index()
     {
         //
-        $absen = Absensi::join('transaksis', function($join) {
+        $ortu = ProfileOrtu::where('user_id', Auth::user()->id)->first();
+        // dd($ortu->siswa_id);
+        $absen = Absensi::join('transaksis', function($join) use($ortu) {
             $join->on('absensis.id_kelas', '=', 'transaksis.kelas_id')
-                ->where('transaksis.status_bayar', 'lunas');
+                ->where('transaksis.status_bayar', 'lunas')
+                ->where('transaksis.user_id', $ortu->siswa_id);
         })->select('absensis.*')->get();
 
-        $hadir = AbsensiUser::where('status', 'hadir')->count();
-        $izin = AbsensiUser::where('status', 'ijin')->count();
-        $tidak = AbsensiUser::where('status', 'tidak hadir')->count();
-
         // dd($absen);
-        return view('ortu.absen',[
-            "absen" => $absen,
-            "hadir" => $hadir,
-            "izin" => $izin,
-            "tidak" => $tidak,
-        ]);
+        return view('ortu.absen', compact(['absen']));
     }
 
     /**

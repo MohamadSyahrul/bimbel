@@ -27,6 +27,12 @@ Route::resource('/kelas', 'Frontend\KelasController');
 Route::resource('/keranjang', 'Frontend\KeranjangController');
 
 Auth::routes();
+
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('change-password', 'ChangePasswordController@index')->name('change');
+    Route::post('change-password', 'ChangePasswordController@store')->name('change.password');
+});
+
 Route::middleware(['auth'])->group(function() {
 
     // Route Admin
@@ -155,10 +161,13 @@ Route::middleware(['auth'])->group(function() {
     Route::group(['prefix' => 'ortu', 'middleware' => 'ortu', 'name' => 'ortu'], function () {
         Route::get('/', function () {
             return view('ortu.dashboard');
-        });
+        })->name('DashboardOrtu');
+
+        // absen
         Route::resource('absen', 'Ortu\AbsenController');
+
         // jadwal
-        Route::resource('jadwal-siswa', 'Ortu\OrtuController');
+        Route::resource('jadwal', 'Ortu\JadwalController');
 
     });
 });
