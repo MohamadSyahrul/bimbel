@@ -139,7 +139,7 @@ Route::middleware(['auth'])->group(function() {
         Route::get('/terbatas/absen-siswa-terbatas/rekap/', 'AbsensiTerbatasController@pdfRekap')->name('cetakRekap');
 
         Route::get('/rekap/absensi', 'RekapController@index')->name('rekap');
-        Route::get('/rekap/absensi/{id}', 'RekapController@getData')->name('getData');
+        Route::get('/rekap/absensi/{id}/{dateStart}/{dateEnd}', 'RekapController@getData')->name('getData');
     });
 
     // Route Siswa

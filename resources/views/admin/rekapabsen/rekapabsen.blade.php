@@ -28,13 +28,12 @@ Rekap Absen
                             <input type='date' id='dateEnd' name='dateEnd'>
                             
                             <select name="search" id="search" class="form-select" aria-labelledby="dropdownMenuButton">
-                                <option name="search" id="search" value="999999">Pilih Kelas</option>
+                                <option name="search" id="search" value="999999/2222-12-12/2222-12-12">Pilih Kelas</option>
                                 @foreach($kelas as $kl)
                                 <option name="search" id="search" value="{{$kl->id}}">{{$kl->kategori_kelas}} - {{$kl->nama_kelas}}</option>
                                 @endforeach
                             </select>
                             <input class="btn btn-primary mr-1" type='button' value='Search' id='btnSearch'>
-                            <input class="btn btn-primary mr-1" type='button' value='Show All Data' id='fetchAllRecord'>
                             </div>
                         </div>
                         <div class="card-content">
@@ -83,8 +82,9 @@ Rekap Absen
                                         // Search by userid
                                         $('#btnSearch').click(function(){
                                             var id          = Number($('#search').val().trim());
-                                            var dateStart   = Date($('#dateStart').val().trim());
-                                            var dateEnd     = Date($('#dateEnd').val().trim());
+                                            var dateStart   = $('#dateStart').val();
+                                            var dateEnd     = $('#dateEnd').val();
+                                            // console.log(dateStart);
                                             if(id > 0){
                                                 fetchRecords(id,dateStart,dateEnd);
                                             }
@@ -92,26 +92,28 @@ Rekap Absen
                                     });
                                     function fetchRecords(id,dateStart,dateEnd){
                                         $.ajax({
-                                            url: '/admin/rekap/absensi/'+id,
+                                            url: '/admin/rekap/absensi/'+id+'/'+dateStart+'/'+dateEnd,
                                             type: 'get',
                                             dataType: 'json',
                                             success: function(response){
                                                 var len = 0;
-                                                // var len2 = 0;
+                                                var len2 = 0;
+                                                // console.log(response);
                                                 $('#userTable tbody').empty(); // Empty <tbody>
                                                 if(response['data'] != null){
                                                     len = response['data'].length;
+                                                    len2 = response['kelas'].length;
                                                 }
                                                 if(len > 0){
-                                                    for(var i=0; i<len; i++){
-                                                        var id = response['data'][i].id;
-                                                        var tanggal = response['data'][i].tanggal;
-                                                        var nama_kelas = response['kelas'][i].nama_kelas;
-                                                        var kategori_kelas = response['kelas'][i].kategori_kelas;
-                                                        var hadir = response['hadir'];
-                                                        var izin = response['izin'];
-                                                        var thadir = response['thadir'];
-                                                        var total = response['total'];
+                                                    for(var i=0; i<len2; i++){
+                                                        for(var j=0; j<len; j++){
+                                                        var tanggal = response['data'][j].tanggal;
+                                                        var nama_kelas = response['kelas'][j].nama_kelas;
+                                                        var kategori_kelas = response['kelas'][j].kategori_kelas;
+                                                        var hadir = response[i][j]['hadir'];
+                                                        var izin = response[i][j]['izin'];
+                                                        var thadir = response[i][j]['thadir'];
+                                                        var total = response[i][j]['total'];
                                                         var tr_str = "<tr>" +
                                                         "<td>" + (i+1) + "</td>" +
                                                         "<td>" + tanggal + "</td>" +
@@ -123,19 +125,31 @@ Rekap Absen
                                                         "<td align='center' >" + total + "</td>" +
                                                         "</tr>";
                                                         $("#userTable tbody").append(tr_str);
+                                                        }
                                                     }
                                                 }else if(response['data'] != null){
-                                                    var tr_str = "<tr>" +
-                                                    "<td>1</td>" +
-                                                    "<td>" + response['data'].tanggal + "</td>" +
-                                                    "<td>" + response['kelas'].nama_kelas + "</td>" + 
-                                                    "<td>" + response['kelas'].kategori_kelas + "</td>" +
-                                                    "<td align='center' >" + response['hadir'] + "</td>" +
-                                                    "<td align='center' >" + response['izin'] + "</td>" +
-                                                    "<td align='center' >" + response['thadir'] + "</td>" +
-                                                    "<td align='center' >" + response['total'] + "</td>" +
-                                                    "</tr>";
-                                                    $("#userTable tbody").append(tr_str);
+                                                    for(var i=0; i<len2; i++){
+                                                        for(var j=0; j<len; j++){
+                                                        var tanggal = response['data'][j].tanggal;
+                                                        var nama_kelas = response['kelas'][j].nama_kelas;
+                                                        var kategori_kelas = response['kelas'][j].kategori_kelas;
+                                                        var hadir = response[i][j].hadir;
+                                                        var izin = response[i][j].izin;
+                                                        var thadir = response[i][j].thadir;
+                                                        var total = response[i][j].total;
+                                                        var tr_str = "<tr>" +
+                                                        "<td>" + (i+1) + "</td>" +
+                                                        "<td>" + tanggal + "</td>" +
+                                                        "<td>" + nama_kelas + "</td>" +
+                                                        "<td>" + kategori_kelas + "</td>" +
+                                                        "<td align='center' >" + hadir + "</td>" +
+                                                        "<td align='center' >" + izin + "</td>" +
+                                                        "<td align='center' >" + thadir + "</td>" +
+                                                        "<td align='center' >" + total + "</td>" +
+                                                        "</tr>";
+                                                        $("#userTable tbody").append(tr_str);
+                                                        }
+                                                    }
                                                 }else{
                                                     var tr_str = "<tr>" +
                                                     "<td align='center' colspan='7'>No record found.</td>" +
