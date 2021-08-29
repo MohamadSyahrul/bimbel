@@ -108,8 +108,8 @@ Rekap Absen
                                                     for(var i=0; i<len2; i++){
                                                         for(var j=0; j<len; j++){
                                                         var tanggal = response['data'][j].tanggal;
-                                                        var nama_kelas = response['kelas'][j].nama_kelas;
-                                                        var kategori_kelas = response['kelas'][j].kategori_kelas;
+                                                        var nama_kelas = response['kelas'][i].nama_kelas;
+                                                        var kategori_kelas = response['kelas'][i].kategori_kelas;
                                                         var hadir = response[j]['hadir'];
                                                         var izin = response[j]['izin'];
                                                         var thadir = response[j]['thadir'];
