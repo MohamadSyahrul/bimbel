@@ -21,6 +21,7 @@ class RekapController extends Controller
     {   
         
         if ($id == 0 && $dateStart == 0 && $dateEnd == 0) {
+            $arr['kelas'] = Kelas::orderBy('id', 'asc')->get();
             $arr['data'] = Absensi::orderBy('id', 'asc')->get();
             $arr['date'] = Absensi::whereBetween('created_at',[$dateStart,$dateEnd])->get();
             // $arr = Kelas::orderBy('id', 'asc')->get(); 
@@ -38,7 +39,7 @@ class RekapController extends Controller
                 ->where('status','none')->where('absensi_id', '=', $i->id)->where('id_kelas','=', $id)->get()->count();
             }
         }else{
-            // $arr['data'] = Kelas::where('id', $id)->get();
+            $arr['kelas'] = Kelas::where('id', $id)->get();
             $arr['data'] = Absensi::where('id_kelas', '=', $id)->get();
             $arr['date'] = Absensi::whereBetween('created_at',[$dateStart,$dateEnd])->get();
             // $ab = $arr['absen'];

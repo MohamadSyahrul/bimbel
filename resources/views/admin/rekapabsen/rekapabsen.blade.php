@@ -106,8 +106,8 @@ Rekap Absen
                                                     for(var i=0; i<len; i++){
                                                         var id = response['data'][i].id;
                                                         var tanggal = response['data'][i].tanggal;
-                                                        var nama_kelas = response['data'][i].nama_kelas;
-                                                        var kategori_kelas = response['data'][i].kategori_kelas;
+                                                        var nama_kelas = response['kelas'][i].nama_kelas;
+                                                        var kategori_kelas = response['kelas'][i].kategori_kelas;
                                                         var hadir = response['hadir'];
                                                         var izin = response['izin'];
                                                         var thadir = response['thadir'];
@@ -128,8 +128,8 @@ Rekap Absen
                                                     var tr_str = "<tr>" +
                                                     "<td>1</td>" +
                                                     "<td>" + response['data'].tanggal + "</td>" +
-                                                    "<td>" + response['data'].nama_kelas + "</td>" + 
-                                                    "<td>" + response['data'].kategori_kelas + "</td>" +
+                                                    "<td>" + response['kelas'].nama_kelas + "</td>" + 
+                                                    "<td>" + response['kelas'].kategori_kelas + "</td>" +
                                                     "<td align='center' >" + response['hadir'] + "</td>" +
                                                     "<td align='center' >" + response['izin'] + "</td>" +
                                                     "<td align='center' >" + response['thadir'] + "</td>" +
