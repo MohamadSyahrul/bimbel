@@ -15,7 +15,6 @@ Rekap Absen
 <div class="header-navbar-shadow"></div>
 <div class="content-wrapper">
     <div class="content-body">
-        
         <!-- Zero configuration table -->
         <section id="basic-datatable">
             <div class="row">
@@ -24,49 +23,129 @@ Rekap Absen
                         <div class="card-header">
                             <h4 class="card-title">Rekap Absensi Siswa</h4>
                             <div class="btn-group mb-1 float-right">
-                                <div class="dropdown">
-                                    <button class="btn btn-primary dropdown-toggle mr-1" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        Pilih Kelas
-                                    </button>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="#">SD / MI</a>
-                                        <a class="dropdown-item" href="#">SMP / MTs</a>
-                                        <a class="dropdown-item" href="#">SMA / MA - IPA</a>
-                                        <a class="dropdown-item" href="#">SMA / MA - IPS</a>
-                                        <a class="dropdown-item" href="#">SBMPTN</a>
-                                        <a class="dropdown-item" href="#">Kedinasan / Ikatan Dinas</a>
-                                    </div>
-                                </div>
+                            <!-- <input type='text' id='search' name='search' placeholder='Enter userid 10-21'> -->
+                            <input type='date' id='dateStart' name='dateStart'>
+                            <input type='date' id='dateEnd' name='dateEnd'>
+                            
+                            <select name="search" id="search" class="form-select" aria-labelledby="dropdownMenuButton">
+                                <option name="search" id="search" value="999999">Pilih Kelas</option>
+                                @foreach($kelas as $kl)
+                                <option name="search" id="search" value="{{$kl->id}}">{{$kl->kategori_kelas}} - {{$kl->nama_kelas}}</option>
+                                @endforeach
+                            </select>
+                            <input class="btn btn-primary mr-1" type='button' value='Search' id='btnSearch'>
+                            <input class="btn btn-primary mr-1" type='button' value='Show All Data' id='fetchAllRecord'>
                             </div>
                         </div>
                         <div class="card-content">
                             <div class="card-body card-dashboard">
                                 
                                 <div class="table-responsive">
-                                    <table class="table zero-configuration">
-                                        <thead>
-                                            <tr>
-                                                <th>No.</th>
-                                                <th>Nama</th>
-                                                <th>Kategori</th>
-                                                <th>Hadir</th>
-                                                <th>Izin</th>
-                                                <th>Tidak Hadir</th>
-                                                <th>Total</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>kolom nama lengkap</td>
-                                                <td>terbatas / regular</td>
-                                                <td>5</td>
-                                                <td>6</td>
-                                                <td>8</td>
-                                                <td>19</td>
-                                            </tr>
-                                           
-                                    </table>
+                                <table class="dt-advanced-search table" id='userTable'>
+                                    <thead>
+                                    <tr>
+                                        <th rowspan="2" style="vertical-align: middle;" >No.</th>
+                                        <th rowspan="2" style="vertical-align: middle;" >Tanggal</th>
+                                        <th rowspan="2" style="vertical-align: middle;" >Nama Kelas</th>
+                                        <th rowspan="2" style="vertical-align: middle;" >Kategori Kelas</th>
+                                        <th colspan="4" style="text-align: center;" >Siswa</th>
+                                    </tr>
+                                    
+                                        <th style="text-align: center;" > Hadir</th>
+                                        <th style="text-align: center;" > Izin</th>
+                                        <th style="text-align: center;" > Tidak Hadir</th>
+                                        <th style="text-align: center;" > Total</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        
+                                    </tbody>
+                                    <tfoot>
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Tanggal</th>
+                                        <th>Nama Kelas</th>
+                                        <th>Kategori Kelas</th>
+                                        <th style="text-align: center;" > Hadir</th>
+                                        <th style="text-align: center;" > Izin</th>
+                                        <th style="text-align: center;" > Tidak Hadir</th>
+                                        <th style="text-align: center;" > Total</th>
+                                    </tr>
+                                    </tfoot>
+                                </table>
+                                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> <!-- jQuery CDN -->
+                                <script type='text/javascript'>
+                                    $(document).ready(function(){
+                                        // Fetch all records
+                                        $('#fetchAllRecord').click(function(){
+                                            fetchRecords(0);
+                                        });
+                                        // Search by userid
+                                        $('#btnSearch').click(function(){
+                                            var id          = Number($('#search').val().trim());
+                                            var dateStart   = Date($('#dateStart').val().trim());
+                                            var dateEnd     = Date($('#dateEnd').val().trim());
+                                            if(id > 0){
+                                                fetchRecords(id,dateStart,dateEnd);
+                                            }
+                                        });
+                                    });
+                                    function fetchRecords(id,dateStart,dateEnd){
+                                        $.ajax({
+                                            url: '/admin/rekap/absensi/'+id,
+                                            type: 'get',
+                                            dataType: 'json',
+                                            success: function(response){
+                                                var len = 0;
+                                                // var len2 = 0;
+                                                $('#userTable tbody').empty(); // Empty <tbody>
+                                                if(response['data'] != null){
+                                                    len = response['data'].length;
+                                                }
+                                                if(len > 0){
+                                                    for(var i=0; i<len; i++){
+                                                        var id = response['data'][i].id;
+                                                        var tanggal = response['data'][i].tanggal;
+                                                        var nama_kelas = response['data'][i].nama_kelas;
+                                                        var kategori_kelas = response['data'][i].kategori_kelas;
+                                                        var hadir = response['hadir'];
+                                                        var izin = response['izin'];
+                                                        var thadir = response['thadir'];
+                                                        var total = response['total'];
+                                                        var tr_str = "<tr>" +
+                                                        "<td>" + (i+1) + "</td>" +
+                                                        "<td>" + tanggal + "</td>" +
+                                                        "<td>" + nama_kelas + "</td>" +
+                                                        "<td>" + kategori_kelas + "</td>" +
+                                                        "<td align='center' >" + hadir + "</td>" +
+                                                        "<td align='center' >" + izin + "</td>" +
+                                                        "<td align='center' >" + thadir + "</td>" +
+                                                        "<td align='center' >" + total + "</td>" +
+                                                        "</tr>";
+                                                        $("#userTable tbody").append(tr_str);
+                                                    }
+                                                }else if(response['data'] != null){
+                                                    var tr_str = "<tr>" +
+                                                    "<td>1</td>" +
+                                                    "<td>" + response['data'].tanggal + "</td>" +
+                                                    "<td>" + response['data'].nama_kelas + "</td>" + 
+                                                    "<td>" + response['data'].kategori_kelas + "</td>" +
+                                                    "<td align='center' >" + response['hadir'] + "</td>" +
+                                                    "<td align='center' >" + response['izin'] + "</td>" +
+                                                    "<td align='center' >" + response['thadir'] + "</td>" +
+                                                    "<td align='center' >" + response['total'] + "</td>" +
+                                                    "</tr>";
+                                                    $("#userTable tbody").append(tr_str);
+                                                }else{
+                                                    var tr_str = "<tr>" +
+                                                    "<td align='center' colspan='7'>No record found.</td>" +
+                                                    "</tr>";
+                                                    $("#userTable tbody").append(tr_str);
+                                                }
+                                            }
+                                        });
+                                    }
+                                    </script>
                                 </div>
                             </div>
                         </div>

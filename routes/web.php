@@ -138,9 +138,8 @@ Route::middleware(['auth'])->group(function() {
         Route::get('/terbatas/absen-siswa-terbatas/cetak/{id}', 'AbsensiTerbatasController@pdf')->name('cetak');
         Route::get('/terbatas/absen-siswa-terbatas/rekap/', 'AbsensiTerbatasController@pdfRekap')->name('cetakRekap');
 
-        Route::get('/rekap/absensi', function () {
-            return view('admin.rekapabsen.rekapabsen');
-        });
+        Route::get('/rekap/absensi', 'RekapController@index')->name('rekap');
+        Route::get('/rekap/absensi/{id}', 'RekapController@getData')->name('getData');
     });
 
     // Route Siswa
