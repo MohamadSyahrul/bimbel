@@ -66,7 +66,7 @@ class RekapController extends Controller
                 $idabsensi   = $i->id;
                 $id_user     = $i->user_id;
                     $arr[$j]['total']  = \App\AbsensiUser::join('absensis', 'absensis.id', '=', 'absensi_users.absensi_id')
-                    ->where('absensi_id', $idabsensi)->where('absensi_id', $id)->where('user_id', $id_user)
+                    ->where('absensi_id', $idabsensi)->where('absensi_id', $id)->where('user_id', $id_user)->where('status', ['hadir', 'izin', 'tidak hadir', 'none'])
                     ->count();
                     $arr[$j]['hadir']  = \App\AbsensiUser::join('absensis', 'absensis.id', '=', 'absensi_users.absensi_id')
                     ->where('status','hadir')->where('absensi_id', $idabsensi)->where('id_kelas', $id)->where('user_id', $id_user)
