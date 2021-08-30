@@ -45,6 +45,7 @@ Rekap Absen
                                     <tr>
                                         <th rowspan="2" style="vertical-align: middle;" >No.</th>
                                         <th rowspan="2" style="vertical-align: middle;" >Tanggal</th>
+                                        <th rowspan="2" style="vertical-align: middle;" >Nama Siswa</th>
                                         <th rowspan="2" style="vertical-align: middle;" >Nama Kelas</th>
                                         <th rowspan="2" style="vertical-align: middle;" >Kategori Kelas</th>
                                         <th colspan="4" style="text-align: center;" >Siswa</th>
@@ -63,6 +64,7 @@ Rekap Absen
                                     <tr>
                                         <th>No.</th>
                                         <th>Tanggal</th>
+                                        <th>Nama Siswa</th>
                                         <th>Nama Kelas</th>
                                         <th>Kategori Kelas</th>
                                         <th style="text-align: center;" > Hadir</th>
@@ -108,6 +110,7 @@ Rekap Absen
                                                     for(var i=0; i<len2; i++){
                                                         for(var j=0; j<len; j++){
                                                         var tanggal = response['data'][j].tanggal;
+                                                        var name = response['data'][j].name;
                                                         var nama_kelas = response['kelas'][i].nama_kelas;
                                                         var kategori_kelas = response['kelas'][i].kategori_kelas;
                                                         var hadir = response[j]['hadir'];
@@ -117,6 +120,7 @@ Rekap Absen
                                                         var tr_str = "<tr>" +
                                                         "<td>" + (i+1) + "</td>" +
                                                         "<td>" + tanggal + "</td>" +
+                                                        "<td>" + name + "</td>" +
                                                         "<td>" + nama_kelas + "</td>" +
                                                         "<td>" + kategori_kelas + "</td>" +
                                                         "<td align='center' >" + hadir + "</td>" +
@@ -131,6 +135,7 @@ Rekap Absen
                                                     var tr_str = "<tr>" +
                                                     "<td>" + (i+1) + "</td>" +
                                                     "<td>" + tanggal + "</td>" +
+                                                    "<td>" + name + "</td>" +
                                                     "<td>" + nama_kelas + "</td>" +
                                                     "<td>" + kategori_kelas + "</td>" +
                                                     "<td align='center' >" + hadir + "</td>" +
@@ -141,7 +146,7 @@ Rekap Absen
                                                     $("#userTable tbody").append(tr_str);
                                                 }else{
                                                     var tr_str = "<tr>" +
-                                                    "<td align='center' colspan='7'>No record found.</td>" +
+                                                    "<td align='center' colspan='8'>No record found.</td>" +
                                                     "</tr>";
                                                     $("#userTable tbody").append(tr_str);
                                                     
