@@ -112,17 +112,17 @@ Rekap Absen
                                                             "<td>" + name + "</td>" +
                                                             "<td>" + nama_kelas + "</td>" +
                                                             "<td>" + kategori_kelas + "</td>" +
-                                                            "<td align='center' >" + hadir + "</td>" +
-                                                            "<td align='center' >" + izin + "</td>" +
-                                                            "<td align='center' >" + thadir + "</td>" +
-                                                            "<td align='center' >" + totalSiswa + "</td>" +
+                                                            "<td align='center' >" + hadir + " Kali</td>" +
+                                                            "<td align='center' >" + izin + " Kali</td>" +
+                                                            "<td align='center' >" + thadir + " Kali</td>" +
+                                                            "<td align='center' >" + totalSiswa + " Kali</td>" +
                                                             "</tr>";
                                                             $("#userTable tbody").append(tr_str);
                                                         }
                                                     }
                                                     var tr_str = "<tr>" +
                                                     "<th colspan='7' style='text-align: right;' >Total Seluruh Kelas</th>" +
-                                                    "<th>" + totalKelas + " siswa</th>" +
+                                                    "<th>" + totalKelas + " Absensi siswa</th>" +
                                                     "</tr>";
                                                     $("#userTable tfoot").append(tr_str);
                                                 }else if(response['data'] != null){
