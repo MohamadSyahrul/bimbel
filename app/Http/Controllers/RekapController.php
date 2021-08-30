@@ -56,7 +56,9 @@ class RekapController extends Controller
         }else{
             $arr['data'] = AbsensiUser::join('absensis', 'absensis.id', '=', 'absensi_users.absensi_id')
             ->join('users', 'users.id', '=', 'absensi_users.user_id')->where('id_kelas', $id)
-            ->where('id_kelas', '=', $id)->whereBetween('tanggal',[$dateStart,$dateEnd])->get();
+            ->where('id_kelas', '=', $id)->whereBetween('tanggal',[$dateStart,$dateEnd])
+            ->groupBy('user_id')
+            ->get();
             $arr['kelas'] = Kelas::where('id', $id)->get();
             // $arr['user'] = Kelas::all();
             
@@ -65,21 +67,23 @@ class RekapController extends Controller
             foreach($arr['data'] as $i){
                 $idabsensi   = $i->id;
                 $id_user     = $i->user_id;
-                    $arr[$j]['total']  = \App\AbsensiUser::join('absensis', 'absensis.id', '=', 'absensi_users.absensi_id')
-                    ->where('absensi_id', $idabsensi)->where('absensi_id', $id)->where('user_id', $id_user)->where('status', ['hadir', 'izin', 'tidak hadir', 'none'])
-                    ->count();
-                    $arr[$j]['hadir']  = \App\AbsensiUser::join('absensis', 'absensis.id', '=', 'absensi_users.absensi_id')
-                    ->where('status','hadir')->where('absensi_id', $idabsensi)->where('id_kelas', $id)->where('user_id', $id_user)
-                    ->count();
-                    $arr[$j]['thadir'] = \App\AbsensiUser::join('absensis', 'absensis.id', '=', 'absensi_users.absensi_id')
-                    ->where('status','tidak hadir')->where('absensi_id', $idabsensi)->where('id_kelas', $id)->where('user_id', $id_user)
-                    ->count();
-                    $arr[$j]['izin']   = \App\AbsensiUser::join('absensis', 'absensis.id', '=', 'absensi_users.absensi_id')
-                    ->where('status','izin')->where('absensi_id', $idabsensi)->where('id_kelas', $id)->where('user_id', $id_user)
-                    ->count();
-                    $arr[$j]['none']   = \App\AbsensiUser::join('absensis', 'absensis.id', '=', 'absensi_users.absensi_id')
-                    ->where('status','none')->where('absensi_id', $idabsensi)->where('id_kelas', $id)->where('user_id', $id_user)
-                    ->count();
+                $arr[$j]['totalKehadiranKelas']  = \App\AbsensiUser::join('absensis', 'absensis.id', '=', 'absensi_users.absensi_id')
+                ->count();
+                $arr[$j]['totalKehadiranSiswa']  = \App\AbsensiUser::join('absensis', 'absensis.id', '=', 'absensi_users.absensi_id')
+                ->where('user_id', $id_user)
+                ->count();
+                $arr[$j]['hadir']  = \App\AbsensiUser::join('absensis', 'absensis.id', '=', 'absensi_users.absensi_id')
+                ->where('status','hadir')->where('user_id', $id_user)
+                ->count();
+                $arr[$j]['thadir'] = \App\AbsensiUser::join('absensis', 'absensis.id', '=', 'absensi_users.absensi_id')
+                ->where('status','tidak hadir')->where('user_id', $id_user)
+                ->count();
+                $arr[$j]['izin']   = \App\AbsensiUser::join('absensis', 'absensis.id', '=', 'absensi_users.absensi_id')
+                ->where('status','izin')->where('user_id', $id_user)
+                ->count();
+                $arr[$j]['none']   = \App\AbsensiUser::join('absensis', 'absensis.id', '=', 'absensi_users.absensi_id')
+                ->where('status','none')->where('user_id', $id_user)
+                ->count();
                 $j++;
             }
         }
